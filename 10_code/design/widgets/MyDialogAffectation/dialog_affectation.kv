@@ -1,0 +1,43 @@
+<AffectationDialog>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: '350dp'
+    ScrollView:
+        MDList:
+            id: list
+            spacing: '5dp'
+
+<AffectationItem>
+    size_hint_y: None
+    height: '40dp'
+    on_press: root.update_state()
+    canvas:
+        Color:
+            rgba: app.theme_cls.bg_normal
+        RoundedRectangle:
+            pos: root.pos
+            size: root.size
+            radius: [root._roundness,]
+    BoxLayout:
+        id: _container
+        oriention: 'horizontal'        
+        pos: root.pos
+        padding: root._horizontal_padding, root._vertical_padding
+        spacing: root._spacing
+        MDCheckbox:
+            id: check
+            size_hint_x: None
+            width: '40dp'
+            disabled: True
+            disabled_color: app.theme_cls.primary_color
+        MDLabel:
+            id: designation   
+            text: root.data_designation
+            font_style: root.font_style                               
+        MDLabel:
+            id: amount
+            text: "{:,.2f}".format(root.data_amount).replace(',',' ')
+            font_style: root.font_style
+            shorten_from: "right"
+            shorten: True
+            halign: 'right'

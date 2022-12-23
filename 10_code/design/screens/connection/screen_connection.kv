@@ -1,0 +1,38 @@
+<ConnectionScreen>:
+    name: 'connection'
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.size
+        padding: dp(20)
+        spacing: dp(20)
+        Image:
+            source: 'ressource/image/logo.png'
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height
+            padding: dp(20)
+            spacing: dp(20)         
+            MDTextField:
+                icon_left: 'identifier'
+                hint_text: 'Identifiant'
+                normal_color: app.theme_cls.primary_color
+            MDTextField:
+                hint_text: 'Mot de passe'
+                icon_left: 'lock-question'
+                normal_color: app.theme_cls.primary_color
+                password: True                
+            MDFillRoundFlatIconButton:
+                text: 'Connexion'
+                pos_hint: {'center_x': 0.5}
+                icon: 'login'
+                _radius: '5dp'
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(20)
+            spacing: dp(20)          
+            MDRoundFlatIconButton:
+                text: 'Nouvelle gestion'
+                pos_hint: {'center_x': 0.5}
+                icon: 'account-plus'
+                _radius: '5dp'

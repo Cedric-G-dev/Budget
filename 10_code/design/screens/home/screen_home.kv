@@ -1,0 +1,105 @@
+<HomeScreen>:
+    name: 'home'
+    MDNavigationLayout:
+        ScreenManager:
+            Screen:
+                BoxLayout:
+                    orientation: 'vertical'
+                    MDTopAppBar:
+                        title: 'Menu'
+                        elevation: 10
+                        type_height: 'small'
+                        left_action_items: [['menu', lambda x: menu_drawer.set_state()]]
+                        right_action_items: [['bank-plus', lambda x: x]]
+                        specific_text_color: app.theme_cls.text_color
+                        md_bg_color: app.theme_cls.primary_dark
+                    MDBottomNavigation:
+                        id: nav
+                        panel_color: 0.2, 0.2, 0.2, 1
+                        MDBottomNavigationItem:
+                            name: root.account_nav
+                            text: root.screen_settings['account']['name']
+                            icon: 'bank-outline'
+                            ScrollView:
+                                GridLayout:
+                                    id: accounts
+                                    cols: 1
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    padding: '5dp'
+                                    spacing: '5dp'
+                        MDBottomNavigationItem:
+                            name: root.budget_nav
+                            text: root.screen_settings['budget']['name']
+                            icon: 'database-outline'
+                            BoxLayout:
+                                orientation: 'vertical'
+                                BoxLayout:
+                                    size_hint_y: 0.15
+                                    orientation: 'horizontal'
+                                    MDFloatLayout:
+                                        MDIconButton:
+                                            pos_hint: {'center_x': 5.0/6, 'center_y': 0.5}
+                                            icon: 'bank'
+                                            theme_text_color: 'Custom'
+                                            text_color: app.theme_cls.primary_color
+                                            on_release: root.show_budget_nav_account_filter()
+                                ScrollView:
+                                    GridLayout:
+                                        id: budgets
+                                        cols: 1
+                                        size_hint_y: None
+                                        height: self.minimum_height
+                                        padding: '5dp'
+                                        spacing: '5dp'
+                        MDBottomNavigationItem:
+                            name: root.ticket_nav
+                            text: root.screen_settings['transaction']['name']
+                            icon: 'bank-transfer'
+                            BoxLayout:
+                                orientation: 'vertical'
+                                BoxLayout:
+                                    orientation: 'horizontal'
+                                    size_hint_y: 0.15                                     
+                                    MDFloatLayout:
+                                        MDIconButton:
+                                            pos_hint: {'center_x' : 0.5, 'center_y' : 0.5}
+                                            icon:
+                                                'account-box-outline' if root.list_scroll_position == 0 \
+                                                else 'barcode'
+                                            badge_icon: 'numeric-10'
+                                            theme_text_color: 'Custom'
+                                            text_color: root.general_settings['complementary_color']
+                                            on_release: root.in_out_line_scroll(self)
+                                    MDFloatLayout:
+                                        MDIconButton:
+                                            pos_hint: {'center_x' : 0.5, 'center_y' : 0.5}
+                                            icon: 'bank'
+                                            theme_text_color: 'Custom'
+                                            text_color: app.theme_cls.primary_color
+                                            on_release: root.show_ticket_nav_account_filter()
+                                    MDFloatLayout:
+                                        MDIconButton:
+                                            pos_hint: {'center_x' : 0.5, 'center_y' : 0.5}
+                                            icon: 'database'
+                                            theme_text_color: 'Custom'
+                                            text_color: app.theme_cls.primary_color
+                                            on_release: root.show_ticket_nav_budget_filter()
+                                    MDFloatLayout:
+                                        MDIconButton:
+                                            pos_hint: {'center_x' : 0.5, 'center_y' : 0.5}
+                                            icon: 'progress-clock'
+                                            theme_text_color: 'Custom'
+                                            text_color: app.theme_cls.primary_color
+                                            on_release: root.show_ticket_nav_ticket_state_filter()
+                                ScrollView:
+                                    id: in_out_scroll
+                                    on_scroll_stop: root.add_to_scroll(self)
+                                    MDList:
+                                        id: ticket_list
+                                        spacing: '5dp'
+                                        padding: '2.5dp'
+        MDNavigationDrawer:
+            id: menu_drawer
+            scrim_color: 0, 0, 0, 0
+            NavDrawer

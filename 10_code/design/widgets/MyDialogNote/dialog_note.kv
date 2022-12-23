@@ -1,0 +1,11 @@
+<NoteDialog>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: '100dp'
+    MDTextField:
+        id: note
+        text: root.user_input
+        multiline: True
+        mode: 'rectangle'
+        text_color_normal: app.theme_cls.text_color
+        on_text: root.update_input(self)

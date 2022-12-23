@@ -1,0 +1,37 @@
+<ListItemWithCheckboxDisplay>:
+    bg_color: app.theme_cls.bg_light
+    IconRightWidgetWithoutTouch:
+        icon: root.icon
+    IconLeftWidgetWithoutTouch:
+        icon: 'checkbox-marked-outline' if root.item_state else 'checkbox-blank-outline'
+        theme_text_color: 'Custom'
+        text_color: app.theme_cls.primary_dark if root.item_state else 'gray'
+
+<ExpansionScrollItem>:
+    id: key_item_box
+    orientation: 'vertical'
+    size_hint_y: None
+    height: self.minimum_height
+    OneLineAvatarIconListItem:
+        id: item
+        text: root.text
+        bg_color: app.theme_cls.bg_light
+        on_release: root.control_expansion()
+        IconLeftWidget:
+            icon: root.item_icon
+            on_release: root.control_expansion()
+        IconRightWidget:
+            icon: root.expansion_icon
+            on_release: root.control_expansion()
+    ScrollView:
+        id: scroll
+        size_hint_y: None
+        height: root.scroll_height
+        do_scroll_x: False
+        do_scroll_y: False
+        BoxLayout:
+            id: value_item_box
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height
+            padding: root._margin, 0, 0, 0

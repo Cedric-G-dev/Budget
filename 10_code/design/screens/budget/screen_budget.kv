@@ -1,0 +1,63 @@
+<BudgetScreen>:
+    name: 'Budget management'
+    MDNavigationLayout:
+        ScreenManager:
+            Screen:
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: '0dp'
+                    MDTopAppBar:
+                        title: 'Menu'
+                        elevation: 10
+                        type_height: 'small'
+                        left_action_items: [['menu', lambda x: menu_drawer.set_state()]]
+                        specific_text_color: app.theme_cls.text_color
+                        md_bg_color: app.theme_cls.primary_dark
+                    ScrollView:
+                        effect_cls: ScrollEffect
+                        BoxLayout:
+                            id: box
+                            orientation: 'vertical'
+                            size_hint: 1, None
+                            height: self.minimum_height
+                            padding: '10dp', '10dp'
+                            spacing: '10dp'
+                            FloatLayout:
+                                size_hint_y: None
+                                height: title_separator.height
+                                canvas:
+                                    Color:
+                                        rgba: app.theme_cls.primary_color
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.width, 3
+                                        radius: [1,]
+                                BoxLayout:
+                                    id: title_separator
+                                    orientation: 'horizontal'
+                                    size_hint_y: None
+                                    height: '40dp'
+                                    pos_hint:{'center_x': 0.5, 'center_y': 0.5}
+                                    MDLabel:
+                                        id: text
+                                        text: root.title_separator
+                                        theme_text_color: 'Custom'
+                                        text_color: app.theme_cls.text_color
+                                        font_style: 'Subtitle2'
+                                        halign: 'left'
+                            RepartitionGraph:
+                                id: graph
+                                graph_budget: root.budgets
+                            MDList:
+                                id: budget_list
+                                spacing: '5dp'
+                                padding: '2.5dp'
+                            MDFloatingActionButton:
+                                type: 'small'
+                                icon: 'database-plus'
+                                pos_hint: {'x': 0.1, 'center_y': 0.5}
+                                on_release: root.create_new_budget()
+        MDNavigationDrawer:
+            id: menu_drawer
+            scrim_color: 0, 0, 0, 0
+            NavDrawer

@@ -1,0 +1,131 @@
+<BudgetConfigurationScreen>:
+    name: 'Budget management'
+    MDNavigationLayout:
+        ScreenManager:
+            Screen:
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: '0dp'
+                    MDTopAppBar:
+                        title: 'Menu'
+                        elevation: 10
+                        type_height: 'small'
+                        left_action_items: [['menu', lambda x: menu_drawer.set_state()]]
+                        specific_text_color: app.theme_cls.text_color
+                        md_bg_color: app.theme_cls.primary_dark
+                    ScrollView:
+                        effect_cls: ScrollEffect
+                        BoxLayout:
+                            id: box
+                            orientation: 'vertical'
+                            size_hint: 1, None
+                            height: self.minimum_height
+                            padding: '20dp', '10dp'
+                            spacing: '10dp'
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                size_hint_y: None
+                                height: self.minimum_height
+                                spacing: '20dp'
+                                FloatLayout:
+                                    size_hint_x: None
+                                    width: '40dp'
+                                    FloatLayout:
+                                        size_hint: None, None
+                                        width: '40dp'
+                                        height: '40dp'
+                                        pos_hint: {'x': 0, 'center_y': 0.45}
+                                        canvas:
+                                            Color:
+                                                rgba: app.theme_cls.primary_color
+                                            RoundedRectangle:
+                                                pos: self.pos
+                                                size: self.size
+                                                radius: [5,]
+                                        MDIconButton:
+                                            icon: 'checkbox-blank-circle'
+                                            theme_text_color: 'Custom'
+                                            text_color: root.budget_color
+                                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                            on_press: root.show_color_picker()
+                                MyTextField:
+                                    hint_text: root.budget_hint
+                                    text: root.budget_designation
+                                    on_text: root.return_designation(self)
+                                FloatLayout:
+                                    size_hint_x: None
+                                    width: '40dp'
+                                    MDIconButton:
+                                        icon: 'comment-text'
+                                        theme_text_color: 'Custom'
+                                        text_color: app.theme_cls.primary_color
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+                                        on_release: root.show_note_dialog()
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                size_hint_y: None
+                                height: self.minimum_height
+                                spacing: '20dp'
+                                FloatLayout:
+                                    size_hint_y: None
+                                    height: '40dp'
+                                    MDFillRoundFlatIconButton:
+                                        text: root.budget_account
+                                        icon: 'bank'
+                                        _radius: '5dp'
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+                                        on_press: root.show_account_list()
+                                MyTextField:
+                                    hint_text: root.cap_hint
+                                    text: str(root.budget_cap)
+                                    on_text: root.return_cap(self)
+                                    input_filter: 'int'
+                                    input_type: 'number'
+                                    icon_right: 'currency-eur'
+                                    icon_right_color_normal: app.theme_cls.text_color
+                                    icon_right_color_focus: app.theme_cls.primary_light
+                            FloatLayout:
+                                size_hint_y: None
+                                height: separator.height
+                                canvas:
+                                    Color:
+                                        rgba: app.theme_cls.primary_color
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.width, 3
+                                        radius: [1,]
+                                BoxLayout:
+                                    id: separator
+                                    orientation: 'horizontal'
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    pos_hint:{'center_x': 0.5, 'center_y': 0.5}
+                                    MDLabel:
+                                        id: text
+                                        text: root.expense_separator
+                                        theme_text_color: 'Custom'
+                                        text_color: app.theme_cls.text_color
+                                        font_style: 'Subtitle2'
+                                        halign: 'left'
+                                    MDLabel:
+                                        text: "{:,.2f}".format(root.budget_amount).replace(',',' ')
+                                        theme_text_color: 'Custom'
+                                        text_color: app.theme_cls.text_color
+                                        font_style: 'Subtitle2'
+                                        halign: 'right'
+                                    MDIconButton:
+                                        icon: 'cog-box'
+                                        theme_text_color: 'Custom'
+                                        text_color: app.theme_cls.primary_color
+                                        on_release: root.expense_list_update()
+                            MDList:
+                                id: expense_list
+                                spacing: '5dp'
+                                padding: '2.5dp'
+                            CancelOkButtons:
+                                validation: root.ok_budget_update_or_creation
+                                cancellation: root.cancel_budget_action
+        MDNavigationDrawer:
+            id: menu_drawer
+            scrim_color: 0, 0, 0, 0
+            NavDrawer

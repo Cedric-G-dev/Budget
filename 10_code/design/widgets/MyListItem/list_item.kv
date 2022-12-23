@@ -1,0 +1,173 @@
+<LabelAmountListItem>:
+    size_hint_y: None
+    height: '40dp'
+    ripple_alpha: root._ripple_alpha
+    ripple_duration_in_fast: root._ripple_duration_in_fast
+    canvas:
+        Color:
+            rgba: app.theme_cls.bg_light
+        RoundedRectangle:
+            pos: root.pos
+            size: root.size
+            radius: [root._roundness,]
+    BoxLayout:
+        id: _container
+        oriention: 'horizontal'        
+        pos: root.pos
+        padding: root._horizontal_padding, root._vertical_padding
+        spacing: root._spacing
+        MDLabel:     
+            text: root.designation
+            font_style: root.font_style                                   
+        MDLabel:
+            id: amount
+            text: "{:,.2f}".format(root.amount).replace(',',' ')
+            font_style: root.font_style
+            shorten_from: "right"
+            shorten: True
+            halign: 'right'
+
+<BillLine>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: '65dp'
+    padding: ['30dp', '0dp', '0dp', '0dp']
+    spacing: '20dp'
+    MDTextField:
+        id: input
+        mode: 'rectangle'
+
+        hint_text: root.budget
+        text: root.str_amount
+
+        icon_right: 'currency-eur'
+        icon_right_color_normal: app.theme_cls.text_color
+
+        mutliline: False
+        input_filter: 'float'
+        input_type: 'number'
+        
+        size_hint_x: None
+        width: '150dp'
+        pos_hint: {'center_x':.5,'center_y':.55}
+
+        text_color_normal: app.theme_cls.text_color
+
+        line_color_focus: app.theme_cls.text_color
+        line_color_normal:
+            app.theme_cls.text_color if root.state \
+            else app.theme_cls.error_color
+
+        hint_text_color_normal: app.theme_cls.primary_light
+        hint_text_color_focus: app.theme_cls.primary_color
+    MDIconButton:
+        id: delete
+        icon: 'close-box'
+        theme_text_color: "Custom"
+        text_color: [1, 100/255, 70/255, 1]
+        pos_hint: {'center_x':.5,'center_y':.5}
+
+<ListInOutItem>:
+    size_hint_y: None
+    height: '40dp'
+    ripple_alpha: root._ripple_alpha
+    ripple_duration_in_fast: root._ripple_duration_in_fast
+    canvas:
+        Color:
+            rgba: app.theme_cls.bg_light
+        RoundedRectangle:
+            pos: root.pos
+            size: root.size
+            radius: [root._roundness,]
+    BoxLayout:
+        id: _container
+        oriention: 'horizontal'        
+        pos: root.pos
+        padding: root._horizontal_padding, root._vertical_padding
+        spacing: root._spacing
+        MDIcon:
+            id: state
+            icon:
+                'check' if root.ticket_state == 1 else \
+                ('progress-clock' if root.ticket_state == 2 else \
+                'progress-question')
+            theme_text_color: 'Custom'
+            text_color:
+                'green' if root.ticket_state == 1 else \
+                ('orange' if root.ticket_state == 2  else \
+                'yellow')
+            font_size: '18dp'
+            pos_hint: {'center_y': 0.50}
+            size_hint_x: None
+            width:
+                (_container.width - (2 * root._horizontal_padding) \
+                - (3 * root._spacing)) * 0.07
+        MDLabel:     
+            id: date
+            text: root.date_text
+            theme_text_color: 'Custom'
+            text_color: app.theme_cls.primary_color
+            font_style: root.font_style
+            font_size: '12dp'
+            size_hint_x: None
+            width:
+                (_container.width - (2 * root._horizontal_padding) \
+                - (3 * root._spacing)) * 0.15              
+        ScrollView:
+            id: scroll
+            do_scroll_x: False
+            do_scroll_y: False
+            scroll_x: root.scroll_position
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: None
+                width: scroll.width * 2
+                MDLabel:
+                    id: reason
+                    canvas:
+                        Color:
+                            rgba: 0, 0, 0, 0
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [10]
+                    text: root.reason_text
+                    font_style: root.font_style
+                    shorten_from: "right"
+                    shorten: True
+                    size_hint_x: None
+                    width: scroll.width     
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_x: None
+                    width: scroll.width
+                    MDLabel:
+                        id: recipient
+                        text: root.recipient_text
+                        font_style: root.font_style
+                        shorten_from: "right"
+                        shorten: True
+                        halign: 'left'
+                    MDLabel:
+                        id: budget
+                        text: root.main_budget
+                        theme_text_color: 'Custom'
+                        text_color: root.budget_color
+                        font_style: 'Overline'
+                        shorten_from: "right"
+                        shorten: True
+                        halign: 'right'                                                
+        MDLabel:
+            id: amount
+            text: 
+                "[i]{:,.2f}[/i]".format(root.amount).replace(',',' ') if root.intern \
+                else "{:,.2f}".format(root.amount).replace(',',' ')
+            font_style: root.font_style
+            markup: True
+            shorten_from: "right"
+            shorten: True
+            halign: 'right'
+            size_hint_x: None
+            width:
+                (_container.width - (2 * root._horizontal_padding) \
+                - (3 * root._spacing)) * 0.281     

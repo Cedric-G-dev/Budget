@@ -1,0 +1,90 @@
+<RepartitionGraph>:
+    size_hint_y: None
+    height: root._diagram_height
+    canvas.before:
+        Color: 
+            rgba: app.theme_cls.divider_color
+        RoundedRectangle:
+            size: self.size
+            radius: [root._roundness,]
+        Color: 
+            rgba: app.theme_cls.bg_normal
+        RoundedRectangle:
+            pos: root._thickness, root._thickness
+            size: self.width - root._thickness * 2, self.height - root._thickness * 2
+            radius: [root._roundness,]
+    FloatLayout:
+        MDLabel:
+            text: root.prevision_text
+            font_style: 'Button'
+            font_size: '11dp'
+            adaptive_size: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.55}
+    FloatLayout:
+        MDLabel:
+            text: "{:,.2f}".format(root.month_prevision).replace(',',' ') + ' \u20ac'
+            adaptive_size: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+
+<GraphTip>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        adaptive_size: True
+        padding: root._horizontal_padding, root._vertical_padding
+        pos_hint: {'right': 1,'top': 0.9}
+        canvas:
+            Color: 
+                rgba: root.tip_color
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [root._roundness,]      
+        MDLabel:
+            id: designation
+            text: root.ressource_name
+            font_style: 'Button'
+            font_size: '11dp'
+            adaptive_size: True
+        MDLabel:              
+            id: amount
+            text: "{:.2f}".format(root.ressource_amount) + ' \u20ac'
+            adaptive_size: True
+
+<ConsumptionGraphButton>:
+    id: graph
+    orientation: 'vertical'
+    size_hint: None, None
+    size: root._graph_size, root._graph_size
+    ripple_alpha: root._ripple_alpha
+    ripple_duration_in_fast: root._ripple_duration_in_fast       
+    canvas.before:
+        Color:
+            rgba: rgba('#1B5E20')
+        Ellipse:
+            pos: root.pos
+            size: root.height, root.height
+        Color:
+            rgb: app.theme_cls.bg_normal
+        Ellipse:
+            pos: root.x + root._circle_thickness, root.y + root._circle_thickness
+            size:
+                root.height - root._circle_thickness * 2, \
+                root.height - root._circle_thickness * 2
+        Color:
+            rgb: app.theme_cls.primary_color      
+        Line:
+            points:
+                (root.x + root.height * 0.25, root.y + root.height / 2, \
+                root.x + root.height * 0.75, root.y + root.height / 2)
+            width: root._line_thickness
+    FloatLayout:
+        MDLabel: 
+            text: "{:,.2f}".format(root.expenditure).replace(',',' ') + ' \u20ac'
+            font_style: 'Caption'
+            adaptive_size: True
+            pos_hint: {'center_x': root.height / (2 * root.width), 'center_y': 0.15}  
+    FloatLayout:
+        MDLabel:
+            text: "{:,.2f}".format(root.prevision).replace(',',' ') + ' \u20ac'
+            adaptive_size: True
+            pos_hint: {'center_x': root.height / (2 * root.width), 'center_y': 0.85}

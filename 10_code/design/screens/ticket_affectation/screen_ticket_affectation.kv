@@ -1,0 +1,134 @@
+<TicketAffectationScreen>:
+    on_enter: root.test()
+    name: 'ticket_bill'
+    ScrollView:
+        effect_cls: ScrollEffect
+        BoxLayout:
+            id: box
+            orientation: 'vertical'
+            size_hint: 1, None
+            height: self.minimum_height
+            padding: '20dp', '10dp'
+            spacing: '10dp'
+            FloatLayout:
+                size_hint_y: None
+                height: bill_total.height
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primary_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.width, 3
+                        radius: [1,]
+                BoxLayout:
+                    id: bill_total
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: '40dp'
+                    pos_hint:{'center_x': 0.5, 'center_y': 0.5}
+                    MDLabel:
+                        id: text
+                        text: root.budget_total_separator
+                        theme_text_color: 'Custom'
+                        text_color: app.theme_cls.text_color
+                        font_style: 'Subtitle2'
+                        halign: 'left'
+            FloatLayout:
+                size_hint_y: None
+                height: input.height + dp(10)
+                MDTextField:
+                    id: input
+                    mode: 'rectangle'
+                    mutliline: False
+                    input_filter: 'float'
+                    input_type: 'number'
+                    hint_text: root.bill_amount_txt
+                    text: root.bill_amount
+                    icon_right: 'currency-eur'
+
+                    on_focus: root.bill_amount_update_control(self)
+
+                    size_hint_x: None
+                    width: '125dp'
+                    pos_hint: {'center_x':.5,'center_y':.5}
+
+                    text_color_normal: app.theme_cls.text_color
+
+                    line_color_normal: app.theme_cls.primary_dark
+                    line_color_focus: app.theme_cls.text_color
+
+                    icon_right_color_normal: app.theme_cls.text_color
+
+                    hint_text_color_normal: app.theme_cls.text_color
+                    hint_text_color_focus: app.theme_cls.text_color
+            FloatLayout:
+                size_hint_y: None
+                height: introductor.height
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primary_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.width, 3
+                        radius: [1,]
+                BoxLayout:
+                    id: introductor
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    pos_hint:{'center_x': 0.5, 'center_y': 0.5}
+                    MDLabel:
+                        id: text
+                        text: root.budget_selection_separator
+                        theme_text_color: 'Custom'
+                        text_color: app.theme_cls.text_color
+                        font_style: 'Subtitle2'
+                        halign: 'left'
+                    MDIconButton:
+                        icon:
+                            'arrow-down-drop-circle' if not root.budget_selection_state \
+                            else 'dots-vertical-circle'
+                        on_release: root.expand_selection()
+            ScrollView:
+                id: scroll
+                size_hint_y: None
+                height: 0
+                do_scroll_x: False
+                do_scroll_y: False
+                BoxLayout:
+                    id: budget_selection_box
+                    orientation: 'vertical'
+                    size_hint: 1, None
+                    height: self.minimum_height
+            FloatLayout:
+                size_hint_y: None
+                height: bill_redactor.height
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primary_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.width, 3
+                        radius: [1,]
+                BoxLayout:
+                    id: bill_redactor
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: '40dp'
+                    pos_hint:{'center_x': 0.5, 'center_y': 0.5}
+                    MDLabel:
+                        id: text
+                        text: root.budget_definition_separator
+                        theme_text_color: 'Custom'
+                        text_color: app.theme_cls.text_color
+                        font_style: 'Subtitle2'
+                        halign: 'left'
+            BoxLayout:
+                id: bill
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: '10dp'
+            CancelOkButtons:
+                validation: root.ok_bill
+                cancellation: root.cancel_bill

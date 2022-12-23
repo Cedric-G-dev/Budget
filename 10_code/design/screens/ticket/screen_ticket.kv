@@ -1,0 +1,197 @@
+#: import ScrollEffect kivy.effects.scroll.ScrollEffect
+#: import utils kivy.utils
+
+<TicketScreen>:
+    name: 'ticket'
+    MDNavigationLayout:
+        ScreenManager:
+            Screen:
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: '0dp'
+                    MDTopAppBar:
+                        title: 'Menu'
+                        elevation: 10
+                        type_height: 'small'
+                        left_action_items: [['menu', lambda x: menu_drawer.set_state()]]
+                        right_action_items: [['delete', lambda x: root.open_deletion_dialog()]]
+                        specific_text_color: app.theme_cls.text_color
+                        md_bg_color: app.theme_cls.primary_dark
+                    ScrollView:
+                        effect_cls: ScrollEffect
+                        BoxLayout:
+                            id: box
+                            orientation: 'vertical'
+                            size_hint: 1, None
+                            height: self.minimum_height
+                            padding: '20dp', '10dp'
+                            spacing: '10dp'
+                            FloatLayout:
+                                size_hint_y: None
+                                height: introductor.height
+                                canvas:
+                                    Color:
+                                        rgba: utils.get_color_from_hex(root.general_settings['complementary_color'])
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.width, 3
+                                        radius: [1,]
+                                BoxLayout:
+                                    id: introductor
+                                    orientation: 'horizontal'
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    pos_hint:{'center_x': 0.5, 'center_y': 0.5}
+                                    MDLabel:
+                                        id: text
+                                        text: root.screen_settings['separators']['ticket_info']
+                                        theme_text_color: 'Custom'
+                                        text_color: app.theme_cls.text_color
+                                        font_style: 'Subtitle2'
+                                        halign: 'left'
+                                    MDIconButton:
+                                        icon:
+                                            'arrow-down-drop-circle' if not root.abstract_state \
+                                            else 'dots-vertical-circle'
+                                        on_release: root.expand()
+                            ScrollView:
+                                id: scroll
+                                size_hint_y: None
+                                height: abstract.height
+                                do_scroll_x: False
+                                do_scroll_y: False
+                                BoxLayout:
+                                    id: abstract
+                                    orientation: 'vertical'
+                                    size_hint: 1, None
+                                    height: self.minimum_height
+                                    spacing: '10dp'
+                                    GridLayout:
+                                        cols: 2
+                                        spacing: '10dp'
+                                        size_hint: 1, None
+                                        height: '40dp'
+                                        FloatLayout:
+                                            size_hint_y: None
+                                            height: '40dp'
+                                            MDRectangleFlatIconButton:
+                                                _radius: 1
+                                                text: root.date_label
+                                                icon: 'calendar'
+                                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                                on_press: root.show_calendar()
+                                                md_bg_color: app.theme_cls.bg_light
+                                        FloatLayout:
+                                            size_hint_y: None
+                                            height: '40dp'
+                                            MDRectangleFlatIconButton:
+                                                text: root.transaction_label
+                                                icon: 'arrow-decision'
+                                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                                on_press: root.show_transaction_list()
+                                                md_bg_color: app.theme_cls.bg_light
+                                    GridLayout:
+                                        cols: 1
+                                        spacing: '10dp'
+                                        size_hint: 1, None
+                                        height: '140dp'
+                                        FloatLayout:
+                                            size_hint_y: None
+                                            height: '40dp'
+                                            MDRectangleFlatIconButton:
+                                                text: root.recipient_label
+                                                icon: 'account-box'
+                                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                                on_press: root.show_recipient_definition()
+                                                md_bg_color: app.theme_cls.bg_light
+                                        FloatLayout:
+                                            size_hint_y: None
+                                            height: '40dp'
+                                            MDRectangleFlatIconButton:
+                                                id: reason
+                                                text: root.reason_label
+                                                icon: 'barcode'
+                                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                                on_press: root.show_reason_definition()
+                                                md_bg_color: app.theme_cls.bg_light
+                                        FloatLayout:
+                                            size_hint_y: None
+                                            height: '40dp'
+                                            MDRectangleFlatIconButton:
+                                                text: root.account_label
+                                                icon: 'bank'
+                                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                                on_press: root.show_account_list()
+                                                md_bg_color: app.theme_cls.bg_light
+                                    GridLayout:
+                                        cols: 2
+                                        spacing: '10dp'
+                                        size_hint: 1, None
+                                        height: '50dp'
+                                        FloatLayout:
+                                            size_hint_y: None
+                                            height: '40dp'
+                                            MDRectangleFlatIconButton:
+                                                text: root.payment_type_label
+                                                icon: 'export'
+                                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                                on_press: root.show_paiment_list()
+                                                md_bg_color: app.theme_cls.bg_light
+                                        FloatLayout:
+                                            size_hint_y: None
+                                            height: '40dp'
+                                            MDRectangleFlatIconButton:
+                                                id: note
+                                                text: '...'
+                                                icon: 'comment-text'
+                                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                                on_press: root.show_note_dialog()
+                                                md_bg_color: app.theme_cls.bg_light                                             
+                            FloatLayout:
+                                size_hint_y: None
+                                height: separator.height
+                                canvas:
+                                    Color:
+                                        rgba: utils.get_color_from_hex(root.general_settings['complementary_color'])
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.width, 3
+                                        radius: [1,]
+                                BoxLayout:
+                                    id: separator
+                                    orientation: 'horizontal'
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    pos_hint:{'center_x': 0.5, 'center_y': 0.5}
+                                    MDLabel:
+                                        id: text
+                                        text: root.screen_settings['separators']['budget_contribution']
+                                        theme_text_color: 'Custom'
+                                        text_color: app.theme_cls.text_color
+                                        font_style: 'Subtitle2'
+                                        halign: 'left'
+                                    MDLabel:
+                                        text: "{:,.2f}".format(root.ticket_amount).replace(',',' ')
+                                        theme_text_color: 'Custom'
+                                        text_color: app.theme_cls.text_color
+                                        font_style: 'Subtitle2'
+                                        halign: 'right'
+                                    MDIconButton:
+                                        icon: 'square-edit-outline'
+                                        theme_text_color: 'Custom'
+                                        text_color: utils.get_color_from_hex(root.general_settings['complementary_color'])
+                                        on_release: root.open_TicketBillScreen()
+                            MDList:
+                                id: budget_list
+                                spacing: '5dp'
+                                padding: '2.5dp'
+                            CancelOkButtons:
+                                validate: root.general_settings['commun_widget']['buttons']['validate']
+                                cancel: root.general_settings['commun_widget']['buttons']['cancel']
+                                validation: root.ok_ticket
+                                cancellation: root.cancel_ticket
+
+        MDNavigationDrawer:
+            id: menu_drawer
+            scrim_color: 0, 0, 0, .3
+            NavDrawer

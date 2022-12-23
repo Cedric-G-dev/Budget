@@ -1,0 +1,125 @@
+<DialogButton>:
+    color: app.theme_cls.text_color
+    background_color: 0, 0, 0, 0
+    background_normal: ''
+    font_size: root.text_font_size
+    canvas.before:
+        Color:
+            rgba: self.no_bg_color
+        RoundedRectangle:
+            size: self.width * root.size_ratio, self.height * root.size_ratio
+            pos:
+                self.pos[0] + self.width / 2 - self.width * root.size_ratio / 2, \
+                self.pos[1] + self.height / 2 - self.height * root.size_ratio / 2
+            radius: root.radius
+
+<DateDialog>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: '400dp'
+    MDBoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: 0.1
+        FloatLayout:
+            MDRectangleFlatIconButton:
+                text: 'Avant-hier'
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                on_press: root.pick_before_yesterday()
+        FloatLayout:
+            MDRectangleFlatIconButton:
+                text: 'Hier'
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                on_press: root.pick_yesterday()
+    MDBoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: 0.15
+        FloatLayout:
+            size_hint_x: 0.1
+            MDIconButton:
+                icon: 'chevron-left-circle'
+                pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+                on_press: root.go_to_previous_month()
+        FloatLayout:
+            MDLabel:
+                id: month_page
+                text: root.month_page
+                theme_text_color: 'Custom'
+                text_color: app.theme_cls.primary_color
+                font_size: 20
+                bold: True
+                halign: 'center' 
+                pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+        FloatLayout:
+            size_hint_x: 0.1
+            MDIconButton:
+                icon: 'chevron-right-circle'
+                pos_hint: {'center_x': 0.5, 'center_y': 0.3} 
+                on_press: root.go_to_next_month()
+    GridLayout:
+        id: dategrid
+        cols: 7
+        rows: 7
+
+<DayOfMonthDialog>:
+    orientation: 'lr-tb'
+    size_hint_y: None
+    height: '300dp'
+    cols: 7
+
+<ColorPickerDialog>:
+    cols: 4
+    size_hint_y: None
+    height: '250dp'
+
+<ItemConfirmDiag>
+    on_release: root.set_icon(check)
+    CheckboxLeftWidget:
+        id: check
+        group: 'check'
+        on_release: root.update_choice()
+<FilterDialog>:
+    id: filter_box
+    orientation: 'vertical'
+    size_hint_y: None
+    height: '350dp'
+    BoxLayout:
+        size_hint: 1, None
+        height: self.minimum_height
+        MDCheckbox:
+            id: filter_checkbox
+            size_hint: None, None
+            size: "48dp", "48dp"
+            checkbox_icon_normal: 'checkbox-multiple-blank-outline'
+            checkbox_icon_down: 'checkbox-multiple-outline'
+            on_release: root.filter_checkbox()
+        MDLabel:
+            id: filter_name
+            font_style: 'Button'
+    ScrollView:
+        effect_cls: ScrollEffect
+        MDList:
+            id: filter_list
+
+<ListItemFilter>:
+    on_release: root.list_click_set_checkbox(check)
+    CheckboxLeftWidget:
+        id: check
+        on_active: root.checkbox_active_set_checkbox(self)
+
+<ResearchDialog>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: '350dp'
+    MDTextField:
+        id: input
+        text: root.user_input
+        text_color_normal: app.theme_cls.text_color
+        mode: 'rectangle'
+        hint_text: root.search_hint
+    ScrollView:
+        effect_cls: ScrollEffect
+        MDList:
+            id: suggestion_list
+
+<ListItemResearch>:
+    on_release: root.update_input()

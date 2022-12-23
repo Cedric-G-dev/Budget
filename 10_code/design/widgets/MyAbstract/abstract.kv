@@ -1,0 +1,357 @@
+<BudgetAbstract>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: self.minimum_height
+    canvas:
+        Color: 
+            rgba: root._border_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [root._roundness,]
+        Color: 
+            rgba: app.theme_cls.bg_normal
+        RoundedRectangle:
+            pos: self.x + root._thickness, self.y + root._thickness
+            size: self.width - root._thickness * 2, self.height - root._thickness * 2
+            radius: [root._roundness,]
+        Color:
+            rgba: app.theme_cls.primary_color
+        Line:
+            points:
+                (root.x + root._roundness, root.y + root._roundness / 2, \
+                root.x + root._roundness + \
+                ((root.width - 2 * root._roundness) * (1 - root.budget_consumption_ratio) \ 
+                if root.budget_consumption_ratio < 1 else 0) , \
+                root.y + root._roundness / 2)
+            width: root._state_indicator_line_thickness
+    BudgetIndication:
+        id: indication
+        name: root.name
+        budget_amount: root.budget_amount
+        budget_cap_state: True if root.budget_amount >= root.budget_cap else False
+        on_release: root.expand()
+    ScrollView:
+        id: scroll
+        size_hint_y: None
+        height: 0
+        do_scroll_x: False
+        do_scroll_y: False
+        BoxLayout:
+            id: box
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: self.minimum_height
+            padding: root._scroll_padding
+            spacing: root._scroll_spacing
+            MDList:
+                pos_hint: {'center_y': 0.5}
+                canvas.before:
+                    Color:
+                        rgba: app.theme_cls.bg_light
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [root._roundness,]                
+                ListBudgetReviewItem:
+                    item_list_text: "{:,.2f}".format(root.end_of_last_month_budget_amount).replace(',',' ') +'  \u20ac'
+                    icon: 'calendar-start'
+                    icon_color: 'green' if root.end_of_last_month_budget_amount > 0 else 'orange'
+                    on_release: root.list_buton_action_1()
+                ListBudgetReviewItem:
+                    item_list_text: root.account_name
+                    icon: 'bank'
+                    icon_color: 
+                        'green' if root.account_status == 0 \
+                        else 'orange' if root.account_status == 1 \
+                        else 'red'
+                    on_release: root.list_buton_action_2()
+
+<BudgetIndication>:
+    size_hint_y: None
+    height: '40dp'
+    ripple_alpha: root._ripple_alpha
+    ripple_duration_in_fast: root._ripple_duration_in_fast
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: '40dp'
+        pos: root.pos
+        padding: root._left_padding, 0, 0, 0
+        MDLabel:
+            text: root.name + ' :'
+            size_hint_x: None
+            width: (root.width - root._left_padding) / 3
+        MDLabel:
+            text: "{:,.2f}".format(root.budget_amount).replace(',',' ')  + '  \u20ac'
+            size_hint_x: None
+            halign: 'right'
+            width: (root.width - root._left_padding) / 3       
+        MDIcon:
+            icon: 'speedometer'
+            theme_text_color: 'Custom'
+            text_color: 'green'
+            opacity: 1 if root.budget_cap_state else 0
+            size_hint_x: None
+            width: (root.width - root._left_padding) / 9
+            pos_hint: {'center_y': 0.50}
+        MDIcon:
+            icon: 'alert-outline'
+            theme_text_color: 'Custom'
+            text_color:
+                'orange' if root.budget_state_indicator == 1 \
+                else 'red'
+            opacity: 0 if root.budget_state_indicator == 0 else 1
+            size_hint_x: None
+            width: (root.width - root._left_padding) / 9
+            pos_hint: {'center_y': 0.50}
+        MDIcon:
+            icon:
+                'arrow-down-drop-circle' if not root.abstract_state \
+                else 'dots-vertical-circle'
+            size_hint_x: None
+            width: (root.width - root._left_padding) / 9
+            pos_hint: {'center_y': 0.50}
+
+<ListBudgetReviewItem>:
+    size_hint_y: None
+    height: '40dp'
+    ripple_alpha: root._ripple_alpha
+    ripple_duration_in_fast: root._ripple_duration_in_fast
+    BoxLayout:
+        id: _text_container
+        oriention: 'horizontal'        
+        pos: root.pos
+        padding: root._horizontal_padding, root._vertical_padding        
+        spacing: root._spacing
+        MDIcon:
+            icon: root.icon
+            theme_text_color: 'Custom'
+            text_color: root.icon_color
+            font_size: '20dp'
+            pos_hint: {'center_y': 0.50}
+        MDLabel:     
+            text: root.item_list_text
+            color: app.theme_cls.primary_color
+
+<AccountAbstract>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: self.minimum_height
+    canvas:
+        Color: 
+            rgba: app.theme_cls.primary_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [root._roundness,]
+        Color: 
+            rgba: app.theme_cls.bg_normal
+        RoundedRectangle:
+            pos: self.x + root._thickness, self.y + root._thickness
+            size: self.width - root._thickness * 2, self.height - root._thickness * 2
+            radius: [root._roundness,]
+    AccountIndication:
+        id: indication
+        name: root.name
+        bank_amount: root.real_amount
+        on_release: root.expand()
+    ScrollView:
+        id: scroll
+        size_hint_y: None
+        height: 0
+        do_scroll_x: False
+        do_scroll_y: False
+        BoxLayout:
+            id: box
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: self.minimum_height
+            padding: root._scroll_padding
+            spacing: root._scroll_spacing
+            MDList:
+                pos_hint: {'center_y': 0.5}
+                canvas.before:
+                    Color:
+                        rgba: app.theme_cls.bg_light
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [root._roundness,]                
+                ListAccoutReviewItem:
+                    amount_text: "{:,.2f}".format(root.real_amount).replace(',',' ')  +' \u20ac'
+                    status_icon: 'database-check'
+                    on_release: root.list_buton_action_1()
+                ListAccoutReviewItem:
+                    amount_text: "{:,.2f}".format(root.bank_amount).replace(',',' ') + '  \u20ac'
+                    status_icon: 'progress-clock'
+                    on_release: root.list_buton_action_2()                   
+
+<AccountIndication>:
+    size_hint_y: None
+    height: '40dp'
+    ripple_alpha: root._ripple_alpha
+    ripple_duration_in_fast: root._ripple_duration_in_fast
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: '40dp'
+        pos: root.pos
+        padding: root._left_padding, 0, 0, 0
+        MDLabel:
+            text: root.name + ' :'
+            size_hint_x: None
+            width: (root.width - root._left_padding) / 3
+        MDLabel:
+            text: "{:,.2f}".format(root.bank_amount).replace(',',' ') + ' \u20ac'
+            size_hint_x: None
+            halign: 'right'
+            width: (root.width - root._left_padding) / 3       
+        MDIcon:
+            icon: root.pending_ticket
+            theme_text_color: 'Custom'
+            text_color: 'orange'
+            opacity: 0 if root.pending_ticket_state else 1
+            size_hint_x: None
+            width: (root.width - root._left_padding) / 9
+            pos_hint: {'center_y': 0.50}
+        MDIcon:
+            icon: root.account_state
+            theme_text_color: 'Custom'
+            text_color:
+                'orange' if root.account_state_indicator == 1 \
+                else 'red'
+            opacity: 0 if root.account_state_indicator == 0 else 1
+            size_hint_x: None
+            width: (root.width - root._left_padding) / 9
+            pos_hint: {'center_y': 0.50}
+        MDIcon:
+            icon:
+                'arrow-down-drop-circle' if not root.abstract_state \
+                else 'dots-vertical-circle'
+            size_hint_x: None
+            width: (root.width - root._left_padding) / 9
+            pos_hint: {'center_y': 0.50}            
+
+<ListAccoutReviewItem>:
+    size_hint_y: None
+    height: '40dp'
+    ripple_alpha: root._ripple_alpha
+    ripple_duration_in_fast: root._ripple_duration_in_fast
+    BoxLayout:
+        id: _text_container
+        oriention: 'horizontal'        
+        pos: root.pos
+        padding: root._horizontal_padding, root._vertical_padding        
+        spacing: root._spacing
+        MDIcon:
+            id: status
+            icon: root.status_icon
+            theme_text_color: 'Custom'
+            text_color: 'orange' if root.status_icon == 'progress-clock' else 'green'
+            font_size: '20dp'
+            pos_hint: {'center_y': 0.50}
+        MDLabel:     
+            id: amount
+            text: root.amount_text
+            theme_text_color: 'Custom'
+            text_color: app.theme_cls.primary_color
+
+<BudgetItem>:
+    size_hint_y: None
+    height: '40dp'
+    ripple_alpha: root._ripple_alpha
+    ripple_duration_in_fast: root._ripple_duration_in_fast
+    canvas:
+        Color:
+            rgba: app.theme_cls.bg_light
+        RoundedRectangle:
+            pos: root.pos
+            size: root.size
+            radius: [root._roundness,]
+    BoxLayout:
+        id: _container
+        oriention: 'horizontal'        
+        pos: root.pos
+        padding: root._horizontal_padding, root._vertical_padding
+        spacing: root._spacing
+        MDIcon:
+            icon: 'checkbox-blank-circle'
+            theme_text_color: 'Custom'
+            text_color: root.color
+            font_size: '20dp'
+            pos_hint: {'center_y': 0.55}
+            size_hint_x: None
+            width:
+                (_container.width - (2 * root._horizontal_padding) \
+                - (3 * root._spacing)) * 0.10
+        MDLabel:     
+            text: root.designation
+            font_style: root.font_style                                   
+        MDLabel:
+            id: amount
+            text: "{:,.2f}".format(root.amount).replace(',',' ')
+            font_style: root.font_style
+            shorten_from: "right"
+            shorten: True
+            halign: 'right'
+            size_hint_x: None
+            width:
+                (_container.width - (2 * root._horizontal_padding) \
+                - (3 * root._spacing)) * 0.37
+
+<BudgetExpensesExpansion>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: self.minimum_height
+    BudgetItem:
+        color: root.budget_dict['color']
+        designation: root.budget_designation
+        amount: root.budget_dict['amount']
+        on_release: root.expansion_state = not root.expansion_state
+    ScrollView:
+        id: scroll
+        size_hint_y: None
+        height: root.scroll_height
+        do_scroll_x: False
+        do_scroll_y: False
+        BoxLayout:
+            id: box
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height
+            padding:
+                root._list_left_padding, root._list_vertical_padding, \
+                root._list_vertical_padding, root._list_right_padding
+            spacing: root._list_spacing
+            canvas.before:
+                Color: 
+                    rgb: root.budget_dict['color']
+                RoundedRectangle:
+                    pos:
+                        (root._list_left_padding - root._color_margin, \
+                        0)
+                    size:
+                        self.width + root._color_margin - root._list_left_padding , \
+                        self.height - root._color_margin
+                    radius: [5,]
+                Color: 
+                    rgba: app.theme_cls.bg_normal
+                RoundedRectangle:
+                    pos:
+                        (root._list_left_padding - root._color_margin + root._color_thickness, \
+                        self.y + root._color_thickness)
+                    size:
+                        self.width - root._color_margin + root._list_left_padding - root._color_thickness * 2, \
+                        self.height - root._color_thickness * 2
+                    radius: [5,]                                
+            BoxLayout:
+                id: list_box
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: root._list_spacing
+            MDFillRoundFlatIconButton:
+                icon: 'database-cog'
+
+

@@ -1,0 +1,29 @@
+<CancelOkButtons>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: '40dp'
+    FloatLayout:      
+        MDRectangleFlatButton:
+            text: root.validate
+            on_release: root.validation()
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+    FloatLayout:
+        size_hint_y: None
+        height: '40dp'
+        MDRectangleFlatButton:
+            text: root.cancel
+            on_release: root.cancellation()
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+<RefillButton>:
+    size_hint_y: None
+    height: refill.height
+    FloatLayout:       
+        MDFillRoundFlatButton:
+            id: refill
+            text: 'Definir un remboursement'
+            _radius: '5dp'
+            font_size: '12dp'
+            md_bg_color: 237/256, 137/256, 44/256, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            on_release: root.trigger()

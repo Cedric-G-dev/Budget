@@ -1,0 +1,130 @@
+<EventScreen>:
+    name: 'expense'
+    MDNavigationLayout:
+        ScreenManager:
+            Screen:
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: '0dp'
+                    MDTopAppBar:
+                        title: 'Menu'
+                        elevation: 10
+                        type_height: 'small'
+                        left_action_items: [['menu', lambda x: menu_drawer.set_state()]]
+                        right_action_items: [['delete', lambda x: root.open_deletion_dialog()]]
+                        specific_text_color: app.theme_cls.text_color
+                        md_bg_color: app.theme_cls.primary_dark
+                    ScrollView:
+                        effect_cls: ScrollEffect
+                        BoxLayout:
+                            id: box
+                            orientation: 'vertical'
+                            size_hint: 1, None
+                            height: self.minimum_height
+                            padding: '20dp', '10dp'
+                            spacing: '10dp'
+                            FloatLayout:
+                                size_hint_y: None
+                                height: introductor.height
+                                canvas:
+                                    Color:
+                                        rgba: app.theme_cls.primary_color
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.width, 3
+                                        radius: [1,]
+                                BoxLayout:
+                                    id: introductor
+                                    orientation: 'horizontal'
+                                    size_hint_y: None
+                                    height: '40dp'
+                                    pos_hint:{'center_x': 0.5, 'center_y': 0.5}
+                                    MDLabel:
+                                        id: introductor_text
+                                        text: root.introduction_separator
+                                        theme_text_color: 'Custom'
+                                        text_color: app.theme_cls.text_color
+                                        font_style: 'Subtitle2'
+                                        halign: 'left'
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                size_hint_y: None
+                                height: self.minimum_height
+                                spacing: '20dp'
+                                MyTextField:
+                                    hint_text: root.expense_name_hint
+                                    text: root.expense_label
+                                    on_focus: root.return_designation(self)
+                                FloatLayout:
+                                    size_hint_x: None
+                                    width: '40dp'
+                                    MDIconButton:
+                                        icon: 'comment-text'
+                                        theme_text_color: 'Custom'
+                                        text_color: app.theme_cls.primary_color
+                                        pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+                                        on_release: root.show_note_dialog()
+                            MyTextField:
+                                pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+                                size_hint_x: 0.5
+                                hint_text: root.expense_monthly_amount_hint
+                                text: root.amount_label
+                                on_focus: root.return_amount(self)
+                                input_type: 'number'
+                                input_filter: 'float'
+                                icon_right: 'currency-eur'
+                                icon_right_color_normal: app.theme_cls.text_color
+                                icon_right_color_focus: app.theme_cls.primary_light
+                            FloatLayout:
+                                size_hint_y: None
+                                height: date_selection.height
+                                canvas:
+                                    Color:
+                                        rgba: app.theme_cls.primary_color
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.width, 3
+                                        radius: [1,]
+                                BoxLayout:
+                                    id: date_selection
+                                    orientation: 'horizontal'
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    pos_hint:{'center_x': 0.5, 'center_y': 0.5}
+                                    MDLabel:
+                                        id: date_selection_text
+                                        text: root.date_separator
+                                        theme_text_color: 'Custom'
+                                        text_color: app.theme_cls.text_color
+                                        font_style: 'Subtitle2'
+                                        halign: 'left'
+                                    MDSwitch:
+                                        id: date_selection_switch
+                                        on_active: root.date_definition(self)
+                            ScrollView:
+                                id: date_scroll
+                                size_hint_y: None
+                                height: 0
+                                do_scroll_x: False
+                                do_scroll_y: False
+                                BoxLayout:
+                                    id: abstract
+                                    orientation: 'vertical'
+                                    size_hint: 1, None
+                                    height: '40dp'
+                                    FloatLayout:
+                                        size_hint_y: None
+                                        height: '40dp'
+                                        MDFillRoundFlatIconButton:
+                                            text: root.payment_day_label
+                                            icon: 'calendar'
+                                            _radius: '5dp'
+                                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                                            on_press: root.show_expense_day_picker()
+                            CancelOkButtons:
+                                validation: root.ok_expense
+                                cancellation: root.cancel_expense
+        MDNavigationDrawer:
+            id: menu_drawer
+            scrim_color: 0, 0, 0, .3
+            NavDrawer

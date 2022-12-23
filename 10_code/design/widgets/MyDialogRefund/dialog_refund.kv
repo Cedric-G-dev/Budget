@@ -1,0 +1,55 @@
+<RefundDialog>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: '300dp'
+    BoxLayout:
+        size_hint_y: None
+        height: add.height
+        MDLabel:
+            text: 'Ajouter un remboursement'
+            font_size: '14dp'     
+        FloatLayout:
+            size_hint_x: None
+            width: add.width
+            MDIconButton:
+                id: add
+                icon: 'plus-circle'
+                theme_text_color: 'Custom'
+                text_color: 'green'                        
+                pos_hint: {'right': 1,'center_y': .5}
+                on_press: root.add_refill() 
+    ScrollView:
+        effect_cls: ScrollEffect
+        StackLayout:
+            id: stack
+            size_hint: 1, None
+            height: self.minimum_height                                        
+
+<RefillLine>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: who.height
+    spacing: '5dp'
+    MDTextField:
+        id: who
+        text_color_normal: app.theme_cls.text_color
+        mutliline: False
+        pos_hint: {'center_x':.5,'center_y':.60}
+        on_focus: root.check_reason(self)
+    MDTextField:
+        id: howmany
+        text_color_normal: app.theme_cls.text_color
+        mutliline: False
+        input_filter: 'float'
+        input_type: 'number'
+        pos_hint: {'center_x':.5,'center_y':.60}
+        on_focus: root.check_amount(self)
+    MDIcon:
+        icon: 'currency-eur'
+        pos_hint: {'center_x':.5,'center_y':.60}    
+    MDIconButton:
+        id: delete
+        icon: 'close-box'
+        theme_text_color: 'Custom'
+        text_color: 'red'
+        pos_hint: {'center_x':.5,'center_y':.60}

@@ -1,0 +1,21 @@
+<MessageSnackbar>:
+    snackbar_animation_dir: 'Right'
+    icon: 'information'
+    auto_dismiss: True
+    duration: 2
+    snackbar_x: '10dp'
+    snackbar_y: '10dp'
+    MDIcon:
+        pos_hint: {'center_y': .5}
+        icon: root.icon
+    MDLabel:
+        id: text_bar
+        size_hint_y: None
+        height: self.texture_size[1]
+        text: root.text
+        font_size: root.font_size
+        theme_text_color: 'Custom'
+        text_color: get_color_from_hex('ffffff')
+        shorten: True
+        shorten_from: 'right'
+        pos_hint: {'center_y': .5}
